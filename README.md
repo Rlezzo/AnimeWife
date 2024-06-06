@@ -8,7 +8,7 @@
 
     `git clone -b AnimeWifeDB --single-branch https://github.com/Rlezzo/AnimeWife.git`
 
-2. 下载 `Releases` 中的  [wife.rar](https://github.com/Rinco304/AnimeWife/releases/download/v1.0/wife.rar) 并将其解压到 `/res/img` 目录下，`需要保证图片名不重名` 
+2. 下载 `Releases` 中的  [wife.rar](https://github.com/Rinco304/AnimeWife/releases/download/v1.0/wife.rar) 并将其解压到 `/res/img` 目录下，**需要保证图片名不重名**
 
 3. 在 `config/__bot__.py`的模块列表里加入 `AnimeWife`
 
