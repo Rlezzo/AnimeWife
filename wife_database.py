@@ -84,12 +84,17 @@ class WifeDatabase:
         })
 
     async def insert_character_file(self, file_name):
-        """向CharacterFiles表插入单一图片文件名数据"""
+        """向CharacterFiles表插入单一图片文件名数据，如果BaseName已存在，则返回False"""
         base_name = os.path.splitext(file_name)[0]
-        await self.insert_data('CharacterFiles', {
-            'FileName': file_name,
-            'BaseName': base_name
-        })
+        try:
+            await self.insert_data('CharacterFiles', {
+                'FileName': file_name,
+                'BaseName': base_name
+            })
+            return True  # 插入成功
+        except aiosqlite.IntegrityError:
+            print(f"Insertion failed: BaseName '{base_name}' already exists.")
+            return False  # 因BaseName已存在，插入失败
 
     async def generic_select_query(self, table_name, select_columns, conditions=None, group_by=None, order_by=None, limit=None):
         """
