@@ -71,7 +71,10 @@ async def initialize_database():
     if await get_character_files_count(db_manager) == 0:
         file_names = os.listdir(imgpath)
         for file_name in file_names:
-            await db_manager.insert_character_file(file_name)
+            success = await db_manager.insert_character_file(file_name)
+            if not success:
+                # 如果插入失败，可能是因为BaseName已经存在，可以选择跳过，或者根据需要处理
+                print(f"导入{file_name}失败, 可能出现重名")
             
 @hoshino.get_bot().server_app.after_serving
 async def close_database():
@@ -255,7 +258,10 @@ async def add_wife(bot,ev:CQEvent):
         await bot.send(ev, f'下载图片失败: {e}')
         return
     # 插入数据库
-    await db_manager.insert_character_file(file_name)
+    success = await db_manager.insert_character_file(file_name)
+    if not success:
+        await bot.send(ev, f'导入{file_name}失败, 可能出现重名')
+        return
     # 如果不是超级管理员，增加用户的添加老婆次数（管理员可一天增加多次）
     if user_id not in hoshino.config.SUPERUSERS:
         mlmt.increase(key)
