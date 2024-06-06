@@ -8,11 +8,18 @@
 
     `git clone -b AnimeWifeDB --single-branch https://github.com/Rlezzo/AnimeWife.git`
 
-2. 下载 `Releases` 中的  [wife.rar](https://github.com/Rinco304/AnimeWife/releases/download/v1.0/wife.rar) 并将其解压到 `/res/img` 目录下，**需要保证图片名不重名**，后缀无所谓
+2. 下载 `Releases` 中的  [wife.rar](https://github.com/Rinco304/AnimeWife/releases/download/v1.0/wife.rar) 并将其解压到 `/res/img` 目录下
+3. **需要保证图片名不重名**，不看后缀的文件名，重名初次导入，添加重复时会提示：
+ ```
+Insertion failed: BaseName '伊地知虹夏' already exists.                        
+导入伊地知虹夏.jpeg失败, 可能出现重名                                          
+Insertion failed: BaseName '莱妮丝·埃尔梅罗·阿奇佐尔缇' already exists.        
+导入莱妮丝·埃尔梅罗·阿奇佐尔缇.jpeg失败, 可能出现重名     
+```
 
-3. 在 `config/__bot__.py`的模块列表里加入 `AnimeWife`
+4. 在 `config/__bot__.py`的模块列表里加入 `AnimeWife`
 
-4. 重启HoshinoBot
+5. 重启HoshinoBot
 
 ## 怎么使用
 
