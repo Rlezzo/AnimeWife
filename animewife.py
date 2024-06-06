@@ -718,12 +718,12 @@ async def character_ntr_rate(bot, ev: CQEvent):
         f"角色名：{character_name}\n{wife_img}\n"
         "所有群：\n"
         f"- 角色被牛总次数：{total_stats['total_action_count']}\n"
-        f"- 角色被牛概率：{total_stats['total_action_count']/total_count_all:.2%}\n"
-        f"- 角色被牛到手概率：{total_stats['successful_action_count']/total_stats['total_action_count']:.2%}\n\n"
+        f"- 角色被牛概率：{(total_stats['total_action_count']/total_count_all if total_count_all > 0 else 0):.2%}\n"
+        f"- 角色被牛到手概率：{(total_stats['successful_action_count']/total_stats['total_action_count'] if total_stats['total_action_count'] > 0 else 0):.2%}\n\n"
         "本群：\n"
         f"- 角色被牛总次数：{group_stats['total_action_count']}\n"
-        f"- 角色被牛概率：{group_stats['total_action_count']/total_count_group:.2%}\n"
-        f"- 角色被牛到手概率：{group_stats['successful_action_count']/group_stats['total_action_count']:.2%}\n\n"
+        f"- 角色被牛概率：{(group_stats['total_action_count']/total_count_group if total_count_group > 0 else 0):.2%}\n"
+        f"- 角色被牛到手概率：{(group_stats['successful_action_count']/group_stats['total_action_count'] if group_stats['total_action_count'] > 0 else 0):.2%}\n\n"
     )
 
         # 本群谁牛角色的次数最多
@@ -843,8 +843,10 @@ async def search_wife_archive(bot, ev: CQEvent):
     for wife in top_drawn_wife:
         response_message += f"{os.path.splitext(wife['CharacterName'])[0]}（{wife['Count']} 次）\n"
 
-    response_message += f"- 牛老婆次数：{ntr_stats['total_action_count']}, 成功率：{ntr_stats['successful_action_count']/ntr_stats['total_action_count']:.2%}\n"
+    success_rate = (ntr_stats['successful_action_count']/ntr_stats['total_action_count']) if ntr_stats['total_action_count'] > 0 else 0
 
+    response_message += f"- 牛老婆次数：{ntr_stats['total_action_count']}, 成功率：{success_rate:.2%}\n"
+        
     response_message += "- 最喜欢牛的老婆是：\n"
     for target in top_ntr_target:
         response_message += f"{os.path.splitext(target['CharacterName'])[0]}（{target['TotalCount']} 次）\n"
@@ -863,7 +865,10 @@ async def search_wife_archive(bot, ev: CQEvent):
         nick_name = await get_nickname_by_uid(group_id, target['TargetUserID'], member_info)
         response_message += f"@{nick_name}（{target['TotalCount']} 次）\n"
 
-    response_message += f"- 被牛次数：{ntr_taken['total_action_count']}, 苦主率：{ntr_taken['successful_action_count']/ntr_taken['total_action_count']:.2%}\n"
+    # 计算苦主率
+    victim_rate = (ntr_taken['successful_action_count'] / ntr_taken['total_action_count']) if ntr_taken['total_action_count'] > 0 else 0
+    # 拼接到响应消息中
+    response_message += f"- 被牛次数：{ntr_taken['total_action_count']}, 苦主率：{victim_rate:.2%}\n"
 
     response_message += "- 被牛走最多的老婆是：\n"
     for character in top_ntr_taken_characters:
